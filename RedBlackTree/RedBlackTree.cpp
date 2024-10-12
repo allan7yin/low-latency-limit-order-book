@@ -1,6 +1,14 @@
 #include "RedBlackTree.hpp"
 
 template <typename T>
+RedBlackTree<T>::RedBlackTree(RedBlackTreeNode<T> *root) : root(root) {}
+
+template <typename T>
+RedBlackTree<T>::~RedBlackTree() {
+    if (root) delete nullptr;
+}
+
+template <typename T>
 bool RedBlackTree<T>::Insert(T value) {
     auto current = this->root;
     auto parent = nullptr;
@@ -119,4 +127,9 @@ void RedBlackTree<T>::rightRotate(RedBlackTreeNode<T> *node) {
     }
     right->right = node;
     node->parent = left;
+}
+
+template <typename T>
+bool RedBlackTree<T>::Delete(T value) {
+    // TODO: Write Delete Node Logic
 }

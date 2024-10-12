@@ -1,5 +1,5 @@
-#ifndef RedBlackTree_hpp
-#define RedBlackTree_hpp
+#ifndef RedBlackTreeNode_hpp
+#define RedBlackTreeNode_hpp
 
 enum class Colour {
     RED,
@@ -12,11 +12,12 @@ class RedBlackTreeNode {
     RedBlackTreeNode *left;
     RedBlackTreeNode *right;
     RedBlackTreeNode *parent;
-    T value;
+    T *value;
     Colour colour;
 
   public:
     RedBlackTreeNode(T value, RedBlackTreeNode *left, RedBlackTreeNode *right, RedBlackTreeNode *parent, Colour colour);
+    ~RedBlackTreeNode();
 };
 
 #endif

@@ -1,5 +1,6 @@
-#ifndef ORDER_HPP
-#define ORDER_HPP
+#ifndef order_hpp
+#define order_hpp
+
 class Order {
   private:
     int id;

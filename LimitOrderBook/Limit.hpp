@@ -1,5 +1,5 @@
-#ifndef LIMIT_HPP
-#define LIMIT_HPP
+#ifndef limit_hpp
+#define limit_hpp
 
 #include "Order.hpp"
 
@@ -8,9 +8,6 @@ class Limit {
     int limitPrice;
     int size;
     int totalVolume;
-    Limit *parent;
-    Limit *leftChild;
-    Limit *rightChild;
     Order *headOrder;
     Order *tailOrder;
 

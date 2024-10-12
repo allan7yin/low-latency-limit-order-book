@@ -1,3 +1,6 @@
+#ifndef RedBlackTree_hpp
+#define RedBlackTree_hpp
+
 #include "RedBlackTreeNode.hpp"
 
 template <class T>
@@ -9,5 +12,10 @@ class RedBlackTree {
     void rightRotate(RedBlackTreeNode<T> *node);
 
   public:
+    RedBlackTree(RedBlackTreeNode<T> *root);
+    ~RedBlackTree();
     bool Insert(T value);
+    bool Delete(T value);
 };
+
+#endif

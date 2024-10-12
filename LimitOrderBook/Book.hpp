@@ -1,15 +1,24 @@
+#ifndef book_hpp
+#define book_hpp
+
+#include "../RedBlackTree/RedBlackTree.hpp"
 #include "Limit.hpp"
 
 class Book {
   private:
-    Limit *buyTree;
-    Limit *sellTree;
-    Limit *stopSellTree;
-    Limit *stopBuyTree;
-    Limit *highestBuy;
-    Limit *lowestSell;
-    Limit *highestStopSell;
-    Limit *lowestStopBuy;
+    RedBlackTree<Limit> *buyTree;
+    RedBlackTree<Limit> *sellTree;
+    RedBlackTree<Limit> *stopSellTree;
+    RedBlackTree<Limit> *stopBuyTree;
 
-    // methods
+    RedBlackTreeNode<Limit> *highestBuy;
+    RedBlackTreeNode<Limit> *lowestSell;
+    RedBlackTreeNode<Limit> *highestStopSell;
+    RedBlackTreeNode<Limit> *lowestStopBuy;
+
+    ~Book();
+
+  public:
 };
+
+#endif
