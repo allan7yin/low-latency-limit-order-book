@@ -16,8 +16,14 @@ class RedBlackTreeNode {
     Colour colour;
 
   public:
-    RedBlackTreeNode(T value, RedBlackTreeNode *left, RedBlackTreeNode *right, RedBlackTreeNode *parent, Colour colour);
-    ~RedBlackTreeNode();
+    RedBlackTreeNode(T value, RedBlackTreeNode<T> *left = nullptr,
+                     RedBlackTreeNode<T> *right = nullptr,
+                     RedBlackTreeNode<T> *parent = nullptr,
+                     Colour colour = Colour::RED) : value(value), left(left), right(right), parent(parent), colour(colour) {}
+    ~RedBlackTreeNode() {
+        if (left) delete left;
+        if (right) delete right;
+    }
 };
 
 #endif

@@ -10,8 +10,7 @@ RBT_DIR = $(SRC_DIR)/RedBlackTree
 
 # Object files
 OBJECTS = main.o \
-          $(LOB_DIR)/Order.o $(LOB_DIR)/Book.o $(LOB_DIR)/Limit.o \
-          $(RBT_DIR)/RedBlackTree.o $(RBT_DIR)/RedBlackTreeNode.o
+          $(LOB_DIR)/Order.o $(LOB_DIR)/Book.o $(LOB_DIR)/Limit.o
 
 # Default target
 all: $(TARGET)
@@ -33,13 +32,6 @@ $(LOB_DIR)/Book.o: $(LOB_DIR)/Book.cpp $(LOB_DIR)/Book.hpp
 
 $(LOB_DIR)/Limit.o: $(LOB_DIR)/Limit.cpp $(LOB_DIR)/Limit.hpp
 	$(CXX) $(CXXFLAGS) -c $(LOB_DIR)/Limit.cpp -o $(LOB_DIR)/Limit.o
-
-# Compile RedBlackTree objects
-$(RBT_DIR)/RedBlackTree.o: $(RBT_DIR)/RedBlackTree.cpp $(RBT_DIR)/RedBlackTree.hpp
-	$(CXX) $(CXXFLAGS) -c $(RBT_DIR)/RedBlackTree.cpp -o $(RBT_DIR)/RedBlackTree.o
-
-$(RBT_DIR)/RedBlackTreeNode.o: $(RBT_DIR)/RedBlackTreeNode.cpp $(RBT_DIR)/RedBlackTreeNode.hpp
-	$(CXX) $(CXXFLAGS) -c $(RBT_DIR)/RedBlackTreeNode.cpp -o $(RBT_DIR)/RedBlackTreeNode.o
 
 # Clean up object files and the executable
 clean:

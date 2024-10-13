@@ -16,9 +16,8 @@ class Book {
     RedBlackTreeNode<Limit> *highestStopSell;
     RedBlackTreeNode<Limit> *lowestStopBuy;
 
-    ~Book();
-
   public:
+    ~Book();
 };
 
 #endif
