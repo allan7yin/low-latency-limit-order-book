@@ -283,6 +283,12 @@ class RedBlackTree {
         delete nodeToDelete;
         return true;
     }
+    RedBlackTreeNode *GetSmallestNode() {
+        auto curr = this->root;
+
+        while (curr) {
+        }
+    }
 };
 
 #endif

@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "unordered_map": "cpp",
+    "__hash_table": "cpp",
+    "new": "cpp",
+    "optional": "cpp",
+    "tuple": "cpp",
+    "typeinfo": "cpp"
+  }
+}

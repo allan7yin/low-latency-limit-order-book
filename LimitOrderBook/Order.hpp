@@ -1,6 +1,8 @@
 #ifndef order_hpp
 #define order_hpp
 
+#include <iostream>
+
 class Order {
   private:
     int id;
@@ -9,16 +11,20 @@ class Order {
     int limit;
     int entryTime;
     int eventTime;
-    Order *nextOrder;
-    Order *prevOrder;
+    Limit *parentLimit;
 
   public:
-    Order(int id, bool buyOrSell, int shares, int limit, int entryTime, int eventTime);
-
-    int getOrderId() const;
+    int getId() const;
+    bool isBuyOrSell() const;
     int getShares() const;
-    bool getBuyOrSell() const;
     int getLimit() const;
+    int getEntryTime() const;
+    int getEventTime() const;
+    void partiallyFillOrder(int orderShares);
+    void process();
+    void remove();
+
+    friend std::ostream &operator<<(std::ostream &os, const Order &order);
 };
 
 #endif
