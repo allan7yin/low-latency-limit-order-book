@@ -7,23 +7,31 @@ enum class Colour {
 };
 
 template <class T>
-class RedBlackTreeNode {
-  private:
+struct RedBlackTreeNode {
+  public:
+    int key; // limit price in this case
+    T value;
     RedBlackTreeNode *left;
     RedBlackTreeNode *right;
     RedBlackTreeNode *parent;
-    T *value;
-    Colour colour;
 
-  public:
-    RedBlackTreeNode(T value, RedBlackTreeNode<T> *left = nullptr,
+    Colour colour;
+    RedBlackTreeNode(int key, T value, RedBlackTreeNode<T> *left = nullptr,
                      RedBlackTreeNode<T> *right = nullptr,
                      RedBlackTreeNode<T> *parent = nullptr,
-                     Colour colour = Colour::RED) : value(value), left(left), right(right), parent(parent), colour(colour) {}
-    ~RedBlackTreeNode() {
-        if (left) delete left;
-        if (right) delete right;
-    }
+                     Colour colour = Colour::RED);
+    ~RedBlackTreeNode();
 };
+
+template <class T>
+RedBlackTreeNode<T>::RedBlackTreeNode(int key, T value, RedBlackTreeNode<T> *left, RedBlackTreeNode<T> *right, RedBlackTreeNode<T> *parent, Colour colour)
+    : key(key), value(value), left(left), right(right), parent(parent), colour(colour) {}
+
+template <class T>
+RedBlackTreeNode<T>::~RedBlackTreeNode() {
+    if (left) delete left;
+    if (right) delete right;
+    delete value; // since value is Limit*
+}
 
 #endif

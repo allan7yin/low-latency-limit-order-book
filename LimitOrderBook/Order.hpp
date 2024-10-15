@@ -1,7 +1,10 @@
 #ifndef order_hpp
 #define order_hpp
 
+#include "Limit.hpp"
 #include <iostream>
+
+class Limit;
 
 class Order {
   private:
@@ -14,15 +17,15 @@ class Order {
     Limit *parentLimit;
 
   public:
+    Order(int id, bool buyOrSell, int shares, int limit, int entryTime = 0, int eventTime = 0);
     int getId() const;
-    bool isBuyOrSell() const;
+    bool getBuyOrSell() const;
     int getShares() const;
     int getLimit() const;
     int getEntryTime() const;
     int getEventTime() const;
+    Limit *getParentLimit() const;
     void partiallyFillOrder(int orderShares);
-    void process();
-    void remove();
 
     friend std::ostream &operator<<(std::ostream &os, const Order &order);
 };

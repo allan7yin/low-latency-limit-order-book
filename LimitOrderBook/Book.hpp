@@ -7,28 +7,32 @@
 
 class Book {
   private:
-    RedBlackTree<Limit> *buyTree;
-    RedBlackTree<Limit> *sellTree;
-    RedBlackTree<Limit> *stopSellTree;
-    RedBlackTree<Limit> *stopBuyTree;
+    int executedOrdersCount;
+    RedBlackTree<Limit *> *buyTree;
+    RedBlackTree<Limit *> *sellTree;
 
-    RedBlackTreeNode<Limit> *highestBuy;
-    RedBlackTreeNode<Limit> *lowestSell;
-    RedBlackTreeNode<Limit> *highestStopSell;
-    RedBlackTreeNode<Limit> *lowestStopBuy;
+    RedBlackTreeNode<Limit *> *highestBuy;
+    RedBlackTreeNode<Limit *> *lowestSell;
 
-    std::unordered_map<int, Order *> orderMap;
+    std::unordered_map<int, DoublyLinkedListNode<Order *> *> orderMap;
 
-    void insertLimit(int limitPrice, bool buyOrSell);
-    void deleteLimit(int limitPrice, bool buyOrSell);
-    void processMarketOrder(int orderId, bool buyOrSell, int shares);
+    DoublyLinkedListNode<Order *> *findOrder(int orderId) const;
+    void insertLimit(const int limitPrice, const bool buyOrSell);
+    void deleteLimit(const int limitPrice, const bool buyOrSell);
+    void processMarketOrder(const int orderId, const bool buyOrSell, int shares);
     int processLimitOrderInMarket(int orderId, bool buyOrSell, int shares, int limitPrice);
 
   public:
-    RedBlackTree<Limit> *getBuyTree() const;
-    RedBlackTree<Limit> *getSellTree() const;
-    RedBlackTreeNode<Limit> *getLowestSell() const;
-    RedBlackTreeNode<Limit> *getHighestBuy() const;
+    RedBlackTree<Limit *> *getBuyTree() const;
+    RedBlackTree<Limit *> *getSellTree() const;
+    RedBlackTreeNode<Limit *> *getLowestSell() const;
+    RedBlackTreeNode<Limit *> *getHighestBuy() const;
+    void addMarketOrder(int orderId, bool buyOrSell, int shares);
+    void addLimitOrder(int orderId, bool buyOrSell, int shares, int limitPrice);
+    void cancelLimitOrder(int orderId);
+
+    RedBlackTreeNode<Limit *> *searchLimitMaps(int limitPrice, bool buyOrSell) const;
+
     ~Book();
 };
 

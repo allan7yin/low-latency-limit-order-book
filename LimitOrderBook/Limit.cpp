@@ -1,7 +1,7 @@
 #include "Limit.hpp"
 #include <iostream>
 
-Limit::Limit(int limitPrice, int size, int totalVolume) : limitPrice(limitPrice), size(size), totalVolume(totalVolume) {}
+Limit::Limit(int limitPrice, bool buyOrSell, int size, int totalVolume) : limitPrice(limitPrice), buyOrSell(buyOrSell), size(size), totalVolume(totalVolume) {}
 
 Limit::~Limit() {
     if (orders) {
@@ -9,7 +9,7 @@ Limit::~Limit() {
     }
 }
 
-Order *Limit::getHeadOrder() const {
+Order *Limit::getHeadOrder() {
     return this->orders->getStart()->value;
 }
 
@@ -23,6 +23,14 @@ int Limit::getSize() const {
 
 int Limit::getTotalVolume() const {
     return this->totalVolume;
+}
+
+bool Limit::getBuyOrSell() const {
+    return this->buyOrSell;
+}
+
+DoublyLinkedList<Order *> *Limit::getOrders() const {
+    return this->orders;
 }
 
 void Limit::addOrder(Order *order) {
@@ -51,6 +59,7 @@ void Limit::printBackward() const {
 
 std::ostream &operator<<(std::ostream &os, const Limit &limit) {
     os << "LimitPrice: " << limit.limitPrice << ", "
+       << (limit.buyOrSell ? "Buy" : "Sell") << ", "
        << "Size: " << limit.size << ", "
        << "TotalVolume: " << limit.totalVolume;
     return os;

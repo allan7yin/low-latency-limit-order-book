@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra
-TARGET = my_program
+TARGET = limit_order_book
 
 SRC_DIR = .
 LOB_DIR = $(SRC_DIR)/LimitOrderBook
@@ -13,8 +13,8 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
 
-main.o: main.cc
-	$(CXX) $(CXXFLAGS) -c main.cc
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
 $(LOB_DIR)/Order.o: $(LOB_DIR)/Order.cpp $(LOB_DIR)/Order.hpp
 	$(CXX) $(CXXFLAGS) -c $(LOB_DIR)/Order.cpp -o $(LOB_DIR)/Order.o
