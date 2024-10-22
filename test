@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.10)
+
+# Set the project name
+project(limit_order_book)
+
+# Specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Set compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+# Define source directories
+set(SRC_DIR "")
+set(LOB_DIR "${SRC_DIR}/LimitOrderBook")
+
+# Define source files
+set(SOURCES
+    main.cpp
+    ${LOB_DIR}/Order.cpp
+    ${LOB_DIR}/Book.cpp
+    ${LOB_DIR}/Limit.cpp
+)
+
+# Define header files
+set(HEADERS
+    ${LOB_DIR}/Order.hpp
+    ${LOB_DIR}/Book.hpp
+    ${LOB_DIR}/Limit.hpp
+)
+
+# Add the executable
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Include directories for headers
+target_include_directories(${PROJECT_NAME} PRIVATE ${LOB_DIR})
