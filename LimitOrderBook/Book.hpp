@@ -1,8 +1,8 @@
 #ifndef book_hpp
 #define book_hpp
 
-#include "../RedBlackTree/RedBlackTree.hpp"
 #include "Limit.hpp"
+#include "RedBlackTree/RedBlackTree.hpp"
 #include <unordered_map>
 
 class Book {

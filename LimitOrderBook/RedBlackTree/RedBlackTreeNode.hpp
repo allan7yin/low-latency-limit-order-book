@@ -31,7 +31,7 @@ template <class T>
 RedBlackTreeNode<T>::~RedBlackTreeNode() {
     if (left) delete left;
     if (right) delete right;
-    delete value; // since value is Limit*
+    // delete value; // since value is Limit*
 }
 
 #endif

@@ -90,6 +90,7 @@ bool RedBlackTree<T>::Insert(const int key, const T value) {
 
         if (newNode->parent == nullptr) {
             newNode->colour = Colour::BLACK;
+            nodeMap[key] = newNode;
             return true;
         }
 
@@ -166,6 +167,8 @@ bool RedBlackTree<T>::Delete(const int key) {
         rebalanceDelete(x);
     }
 
+    nodeToDelete->left = nullptr;
+    nodeToDelete->right = nullptr;
     delete nodeToDelete;
     nodeMap.erase(key);
     size--;

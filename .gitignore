@@ -1,0 +1,24 @@
+# Build files
+/build/
+*.o
+*.out
+*.so
+/bin/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+.cmake/
+
+# External dependencies
+/_deps/
+
+# IDE config files
+.idea/
+.vscode/
+
+# Other temporary files
+*.log
+*.tmp
