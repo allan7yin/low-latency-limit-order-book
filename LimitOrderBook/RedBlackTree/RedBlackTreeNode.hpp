@@ -1,6 +1,8 @@
 #ifndef RedBlackTreeNode_hpp
 #define RedBlackTreeNode_hpp
 
+#include <type_traits>
+
 enum class Colour {
     RED,
     BLACK
@@ -31,7 +33,9 @@ template <class T>
 RedBlackTreeNode<T>::~RedBlackTreeNode() {
     if (left) delete left;
     if (right) delete right;
-    // delete value; // since value is Limit*
+    if constexpr (std::is_pointer<T>::value) {
+        delete value;
+    }
 }
 
 #endif
