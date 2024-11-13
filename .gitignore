@@ -4,6 +4,7 @@
 *.out
 *.so
 /bin/
+lib/
 
 # CMake files
 CMakeCache.txt
@@ -11,6 +12,7 @@ CMakeFiles/
 cmake_install.cmake
 CTestTestfile.cmake
 .cmake/
+makefile
 
 # External dependencies
 /_deps/
