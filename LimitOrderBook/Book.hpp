@@ -16,7 +16,6 @@ class Book {
 
     std::unordered_map<int, DoublyLinkedListNode<Order *> *> orderMap;
 
-    DoublyLinkedListNode<Order *> *findOrder(int orderId) const;
     void insertLimit(const int limitPrice, const bool buyOrSell);
     void deleteLimit(const int limitPrice, const bool buyOrSell);
     void processMarketOrder(const int orderId, const bool buyOrSell, int shares);
@@ -31,8 +30,14 @@ class Book {
     void addLimitOrder(int orderId, bool buyOrSell, int shares, int limitPrice);
     void cancelLimitOrder(int orderId);
 
+    DoublyLinkedListNode<Order *> *searchOrderMap(int orderId) const;
     RedBlackTreeNode<Limit *> *searchLimitMaps(int limitPrice, bool buyOrSell) const;
 
+    // for testing
+    std::vector<int> inOrderTreeTraversal(bool buyOrSell);
+    std::vector<int> preOrderTreeTraversal(bool buyOrSell);
+    std::vector<int> postOrderTreeTraversal(bool buyOrSell);
+    Book();
     ~Book();
 };
 

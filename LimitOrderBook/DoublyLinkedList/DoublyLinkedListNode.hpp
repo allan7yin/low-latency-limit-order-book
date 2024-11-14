@@ -8,7 +8,7 @@ struct DoublyLinkedListNode {
 
     DoublyLinkedListNode *next;
     DoublyLinkedListNode *prev;
-    void remove();
+    // void remove();
     DoublyLinkedListNode(T value, DoublyLinkedListNode *prev = nullptr, DoublyLinkedListNode *next = nullptr);
     ~DoublyLinkedListNode();
 };
@@ -22,16 +22,16 @@ DoublyLinkedListNode<T>::~DoublyLinkedListNode() {
     delete value; // since value is *Order
 }
 
-template <class T>
-void DoublyLinkedListNode<T>::remove() {
-    if (prev != nullptr) {
-        prev->next = next;
-    }
-    if (next != nullptr) {
-        next->prev = prev;
-    }
-    next = nullptr;
-    prev = nullptr;
-}
+// template <class T>
+// void DoublyLinkedListNode<T>::remove() {
+//     if (prev != nullptr) {
+//         prev->next = next;
+//     }
+//     if (next != nullptr) {
+//         next->prev = prev;
+//     }
+//     next = nullptr;
+//     prev = nullptr;
+// }
 
 #endif

@@ -1,7 +1,7 @@
 #include "Limit.hpp"
 #include <iostream>
 
-Limit::Limit(int limitPrice, bool buyOrSell, int size, int totalVolume) : limitPrice(limitPrice), buyOrSell(buyOrSell), size(size), totalVolume(totalVolume) {}
+Limit::Limit(int limitPrice, bool buyOrSell, int size, int totalVolume) : limitPrice(limitPrice), buyOrSell(buyOrSell), size(size), totalVolume(totalVolume), orders(new DoublyLinkedList<Order *>()) {}
 
 Limit::~Limit() {
     if (orders) {
@@ -10,7 +10,7 @@ Limit::~Limit() {
 }
 
 Order *Limit::getHeadOrder() {
-    return this->orders->getStart()->value;
+    return (size > 0) ? this->orders->getStart()->value : nullptr;
 }
 
 int Limit::getLimitPrice() const {
@@ -34,11 +34,22 @@ DoublyLinkedList<Order *> *Limit::getOrders() const {
 }
 
 void Limit::addOrder(Order *order) {
-    this->orders->Insert(order);
+    auto *newNode = new DoublyLinkedListNode<Order *>(order);
+    this->orders->Insert(newNode);
+}
+
+void Limit::removeOrder(DoublyLinkedListNode<Order *> *node) {
+    size--;
+    totalVolume -= node->value->getShares();
+    orders->Delete(node);
 }
 
 void Limit::partiallyFillVolume(int orderShares) {
     this->totalVolume -= orderShares;
+}
+
+void Limit::addShares(int shares) {
+    this->totalVolume += shares;
 }
 
 void Limit::printForward() const {

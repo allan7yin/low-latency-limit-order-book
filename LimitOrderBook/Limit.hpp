@@ -6,6 +6,7 @@
 #include <iostream>
 
 class Order;
+class Book;
 
 class Limit {
   private:
@@ -28,10 +29,13 @@ class Limit {
 
     void addOrder(Order *order);
     void partiallyFillVolume(int orderShares);
+    void addShares(int shares);
+    void removeOrder(DoublyLinkedListNode<Order *> *node);
 
     void printForward() const;
     void printBackward() const;
     friend std::ostream &operator<<(std::ostream &os, const Limit &limit);
+    friend class Book;
 };
 
 #endif

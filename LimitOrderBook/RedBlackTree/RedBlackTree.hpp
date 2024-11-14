@@ -28,6 +28,7 @@ class RedBlackTree {
     RedBlackTreeNode<T> *Search(const int key);
     bool Insert(const int key, const T value);
     bool Delete(const int key);
+    RedBlackTreeNode<T> *getRoot();
     RedBlackTreeNode<T> *GetSmallestNode();
     RedBlackTreeNode<T> *GetLargestNode();
     RedBlackTreeNode<T> *find(int key) const;
@@ -52,6 +53,11 @@ RedBlackTreeNode<T> *RedBlackTree<T>::Search(const int key) {
         return nullptr;
     }
     return nodeMap[key];
+}
+
+template <class T>
+RedBlackTreeNode<T> *RedBlackTree<T>::getRoot() {
+    return root;
 }
 
 template <class T>
@@ -91,6 +97,7 @@ bool RedBlackTree<T>::Insert(const int key, const T value) {
         if (newNode->parent == nullptr) {
             newNode->colour = Colour::BLACK;
             nodeMap[key] = newNode;
+            size++;
             return true;
         }
 
@@ -265,6 +272,7 @@ RedBlackTreeNode<T> *RedBlackTree<T>::maximum(RedBlackTreeNode<T> *node) {
 
 template <class T>
 void RedBlackTree<T>::rebalanceInsert(RedBlackTreeNode<T> *node) {
+    if (!node) return;
     while (node != root && node->parent->colour == Colour::RED) {
         if (node->parent == node->parent->parent->left) {
             RedBlackTreeNode<T> *uncle = node->parent->parent->right;
@@ -305,6 +313,7 @@ void RedBlackTree<T>::rebalanceInsert(RedBlackTreeNode<T> *node) {
 
 template <class T>
 void RedBlackTree<T>::rebalanceDelete(RedBlackTreeNode<T> *node) {
+    if (!node) return;
     while (node != root && node->colour == Colour::BLACK) {
         if (node == node->parent->left) {
             RedBlackTreeNode<T> *sibling = node->parent->right;

@@ -20,9 +20,9 @@ class DoublyLinkedList {
     DoublyLinkedListNode<T> *getHeadNode() const;
     DoublyLinkedListNode<T> *getTailNode() const;
 
-    void Insert(T value);
-    DoublyLinkedListNode<T> *Search(T value);
-    bool Delete(T value);
+    void Insert(DoublyLinkedListNode<T> *node);
+    // DoublyLinkedListNode<T> *Search(T value);
+    bool Delete(DoublyLinkedListNode<T> *node);
 };
 
 template <class T>
@@ -63,33 +63,31 @@ DoublyLinkedListNode<T> *DoublyLinkedList<T>::getTailNode() const {
 }
 
 template <class T>
-void DoublyLinkedList<T>::Insert(T value) {
-    DoublyLinkedListNode<T> *newNode = new DoublyLinkedListNode<T>(value);
+void DoublyLinkedList<T>::Insert(DoublyLinkedListNode<T> *node) {
     if (end == nullptr) {
-        start = end = newNode;
+        start = end = node;
     } else {
-        end->next = newNode;
-        newNode->prev = end;
-        end = newNode;
+        end->next = node;
+        node->prev = end;
+        end = node;
     }
     size++;
 }
 
-template <class T>
-DoublyLinkedListNode<T> *DoublyLinkedList<T>::Search(T value) {
-    DoublyLinkedListNode<T> *current = start;
-    while (current) {
-        if (current->value == value) {
-            return current;
-        }
-        current = current->next;
-    }
-    return nullptr;
-}
+// template <class T>
+// DoublyLinkedListNode<T> *DoublyLinkedList<T>::Search(T value) {
+//     DoublyLinkedListNode<T> *current = start;
+//     while (current) {
+//         if (current->value == value) {
+//             return current;
+//         }
+//         current = current->next;
+//     }
+//     return nullptr;
+// }
 
 template <class T>
-bool DoublyLinkedList<T>::Delete(T value) {
-    DoublyLinkedListNode<T> *node = Search(value);
+bool DoublyLinkedList<T>::Delete(DoublyLinkedListNode<T> *node) {
     if (!node) return false;
 
     if (node->next && node->prev) {

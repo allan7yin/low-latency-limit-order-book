@@ -1,7 +1,8 @@
 #include "Book.hpp"
+#include <iostream>
 
 // PRIVATE
-DoublyLinkedListNode<Order *> *Book::findOrder(int orderId) const {
+DoublyLinkedListNode<Order *> *Book::searchOrderMap(int orderId) const {
     auto it = orderMap.find(orderId);
     if (it != orderMap.end()) {
         return it->second;
@@ -24,15 +25,14 @@ void Book::processMarketOrder(const int orderId, const bool buyOrSell, int share
     auto bookEdge = buyOrSell ? getLowestSell() : getHighestBuy();
     while (bookEdge != nullptr && bookEdge->value->getHeadOrder()->getShares() <= shares) {
         DoublyLinkedListNode<Order *> *headOrder = bookEdge->value->getOrders()->getHeadNode();
+        orderMap.erase(headOrder->value->getId());
         shares -= headOrder->value->getShares();
-        headOrder->remove();
+        bookEdge->value->removeOrder(headOrder);
 
         if (bookEdge->value->getSize() == 0) {
             deleteLimit(bookEdge->value->getLimitPrice(), bookEdge->value->getBuyOrSell());
         }
 
-        orderMap.erase(headOrder->value->getId());
-        delete headOrder;
         executedOrdersCount++;
         bookEdge = buyOrSell ? getLowestSell() : getHighestBuy();
     }
@@ -73,6 +73,14 @@ int Book::processLimitOrderInMarket(const int orderId, const bool buyOrSell, int
 }
 
 // PUBLIC
+Book::Book() : buyTree(new RedBlackTree<Limit *>()), sellTree(new RedBlackTree<Limit *>()) {
+}
+
+Book::~Book() {
+    delete buyTree;
+    delete sellTree;
+}
+
 RedBlackTree<Limit *> *Book::getBuyTree() const {
     return this->buyTree;
 }
@@ -101,24 +109,29 @@ void Book::addLimitOrder(int orderId, bool buyOrSell, int shares, int limitPrice
         insertLimit(limitPrice, buyOrSell);
         auto &tree = buyOrSell ? buyTree : sellTree;
         auto limitNode = tree->find(limitPrice);
-        limitNode->value->getOrders()->Insert(newOrder);
+        limitNode->value->addOrder(newOrder);
+        limitNode->value->size++;
+        limitNode->value->totalVolume += shares;
+        newOrder->parentLimit = limitNode->value;
         orderMap[orderId] = limitNode->value->getOrders()->getTailNode();
     }
 }
 
 void Book::cancelLimitOrder(int orderId) {
     executedOrdersCount = 0;
-    DoublyLinkedListNode<Order *> *orderNode = findOrder(orderId);
+    DoublyLinkedListNode<Order *> *orderNode = searchOrderMap(orderId);
 
     if (orderNode != nullptr) {
-        orderNode->remove();
+        int limit = orderNode->value->getLimit();
         Limit *parentLimit = orderNode->value->getParentLimit();
+
+        parentLimit->removeOrder(orderNode);
+
         if (parentLimit->getSize() == 0) {
-            deleteLimit(orderNode->value->getLimit(), parentLimit->getBuyOrSell());
+            deleteLimit(limit, parentLimit->getBuyOrSell());
         }
 
         orderMap.erase(orderId);
-        delete orderNode;
     }
 }
 
@@ -131,4 +144,54 @@ RedBlackTreeNode<Limit *> *Book::searchLimitMaps(int limitPrice, bool buyOrSell)
     return it;
 }
 
+std::vector<int> Book::inOrderTreeTraversal(bool buyOrSell) {
+    auto tree = (buyOrSell) ? buyTree : sellTree;
+    std::vector<int> result;
+
+    std::function<void(RedBlackTreeNode<Limit *> *)> inOrderHelper = [&](RedBlackTreeNode<Limit *> *node) {
+        if (!node) {
+            return; // Base case: empty node
+        }
+        inOrderHelper(node->left);
+        result.push_back(node->value->getLimitPrice());
+        inOrderHelper(node->right);
+    };
+
+    inOrderHelper(tree->getRoot());
+    return result;
+}
+
+std::vector<int> Book::preOrderTreeTraversal(bool buyOrSell) {
+    auto tree = (buyOrSell) ? buyTree : sellTree;
+    std::vector<int> result;
+
+    std::function<void(RedBlackTreeNode<Limit *> *)> preOrderHelper = [&](RedBlackTreeNode<Limit *> *node) {
+        if (!node) {
+            return; // Base case: empty node
+        }
+        result.push_back(node->value->getLimitPrice());
+        preOrderHelper(node->left);
+        preOrderHelper(node->right);
+    };
+
+    preOrderHelper(tree->getRoot());
+    return result;
+}
+
+std::vector<int> Book::postOrderTreeTraversal(bool buyOrSell) {
+    auto tree = (buyOrSell) ? buyTree : sellTree;
+    std::vector<int> result;
+
+    std::function<void(RedBlackTreeNode<Limit *> *)> postOrderHelper = [&](RedBlackTreeNode<Limit *> *node) {
+        if (!node) {
+            return; // Base case: empty node
+        }
+        postOrderHelper(node->left);
+        postOrderHelper(node->right);
+        result.push_back(node->value->getLimitPrice());
+    };
+
+    postOrderHelper(tree->getRoot());
+    return result;
+}
 // NEED MORE PUBLIC FUNCTIONS FOR TESTING
