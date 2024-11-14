@@ -5,6 +5,7 @@
 *.so
 /bin/
 lib/
+.cache/clangd/
 
 # CMake files
 CMakeCache.txt
