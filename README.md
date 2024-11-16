@@ -2,6 +2,11 @@
 
 This is a Limit Order Book developed in `C++` from scratch, and can handle over 1 million TPS.
 
+### Overview
+
+Matching engines are core component of trading systems, notable stock exchanges. This system was built to learn more about this field and the technical details
+needed to facilitate this these financial systems.
+
 ### Project Tree
 
 ```
@@ -32,11 +37,6 @@ This is a Limit Order Book developed in `C++` from scratch, and can handle over 
 ├── main.cpp
 ├── redblacktree_test
 ```
-
-### Overview
-
-Matching engines are core component of trading systems, notable stock exchanges. This system was built to learn more about this field and the technical details
-needed to facilitate this these financial systems.
 
 ### Idea
 
@@ -103,10 +103,13 @@ The primary 5 tested operations were:
 
 <img src="Docs/localPerformance.png" alt="performance" width="800" height="500">
 
+### Next
+- Test performance on compute cluster
+- Add more order types e.g stop orders
+- Plot performance vs. # of red black tree balances
+
 ### References
 
-https://www.quantstart.com/articles/high-frequency-trading-ii-limit-order-book/
-
-https://web.archive.org/web/20110219163448/http://howtohft.wordpress.com/2011/02/15/how-to-build-a-fast-limit-order-book/
-
-https://github.com/brprojects/Limit-Order-Book?tab=readme-ov-file
+- https://www.quantstart.com/articles/high-frequency-trading-ii-limit-order-book/
+- https://web.archive.org/web/20110219163448/http://howtohft.wordpress.com/2011/02/15/how-to-build-a-fast-limit-order-book/
+- https://github.com/brprojects/Limit-Order-Book?tab=readme-ov-file (Data generator referenced from here)
