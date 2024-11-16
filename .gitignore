@@ -31,3 +31,8 @@ makefile
 /generatedData/initialPerformance.txt
 /generatedData/randomOrders.txt
 /generatedData/finalPerformanceMetrics.txt
+
+# binaries
+redblacktree_test
+limit_order_book
+book_test
