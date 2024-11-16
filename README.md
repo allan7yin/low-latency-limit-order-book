@@ -4,8 +4,8 @@ This is a Limit Order Book developed in `C++` from scratch, and can handle over 
 
 ### Overview
 
-Matching engines are core component of trading systems, notable stock exchanges. This system was built to learn more about this field and the technical details
-needed to facilitate this these financial systems.
+Matching engines are core component of trading systems, most notably stock exchanges. This system was built to learn more about this field and the technical details
+needed to facilitate these financial systems.
 
 ### Project Tree
 
