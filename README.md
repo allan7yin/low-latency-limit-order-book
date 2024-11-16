@@ -104,6 +104,7 @@ The primary 5 tested operations were:
 <img src="Docs/localPerformance.png" alt="performance" width="800" height="500">
 
 ### Next
+
 - Test performance on compute cluster
 - Add more order types e.g stop orders
 - Plot performance vs. # of red black tree balances
