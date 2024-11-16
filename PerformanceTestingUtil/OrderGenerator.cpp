@@ -140,14 +140,14 @@ void OrderGenerator::randomOrders(const std::string &filePath,
     file.open(filePath);
 
     std::uniform_real_distribution<> dis(0.0, 1.0);
-    std::vector<double> probabilities = {0.05, 0.20, 0.60, 0.15};
+    std::vector<double> probabilities = {0.25, 0.25, 0.25, 0.25};
 
     std::vector<std::function<void()>> actions = {
         std::bind(&OrderGenerator::createMarketOrder, this),
         std::bind(&OrderGenerator::createLimitOrder, this),
         std::bind(&OrderGenerator::cancelLimitOrder, this),
-        std::bind(&OrderGenerator::createLimitInMarket, this),
-        std::bind(&OrderGenerator::modifyLimitOrder, this)};
+        std::bind(&OrderGenerator::createLimitInMarket, this)};
+    // std::bind(&OrderGenerator::modifyLimitOrder, this)};
     std::partial_sum(probabilities.begin(), probabilities.end(),
                      probabilities.begin());
 
