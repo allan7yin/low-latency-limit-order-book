@@ -4,12 +4,13 @@ project(limit_order_book VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Debug) # Retain Debug as default
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -mtune=native -flto -funroll-loops -fno-omit-frame-pointer")
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR})
 set(LOB_DIR ${SRC_DIR}/LimitOrderBook)
+set(PERFORMANCE_TESTING_DIR ${SRC_DIR}/PerformanceTestingUtil)
 set(TEST_DIR ${SRC_DIR}/tests)
 
 add_executable(${PROJECT_NAME}
@@ -17,6 +18,8 @@ add_executable(${PROJECT_NAME}
     ${LOB_DIR}/Order.cpp
     ${LOB_DIR}/Book.cpp
     ${LOB_DIR}/Limit.cpp
+    ${PERFORMANCE_TESTING_DIR}/OrderGenerator.cpp
+    ${PERFORMANCE_TESTING_DIR}/OrderExecutor.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${LOB_DIR})
@@ -47,7 +50,6 @@ add_executable(redblacktree_test ${TEST_DIR}/test_redblacktree.cpp)
 # Set up include directories for the tests
 target_include_directories(book_test PRIVATE ${gtest_SOURCE_DIR}/googletest/include)
 target_include_directories(redblacktree_test PRIVATE ${gtest_SOURCE_DIR}/googletest/include)
-
 
 target_include_directories(book_test PRIVATE ${LOB_DIR})
 

@@ -1,17 +1,11 @@
 #include "Limit.hpp"
+#include "Order.hpp"
 #include <iostream>
 
-Limit::Limit(int limitPrice, bool buyOrSell, int size, int totalVolume) : limitPrice(limitPrice), buyOrSell(buyOrSell), size(size), totalVolume(totalVolume), orders(new DoublyLinkedList<Order *>()) {}
+Limit::Limit(int limitPrice, bool buyOrSell, int size, int totalVolume)
+    : limitPrice(limitPrice), buyOrSell(buyOrSell), size(size), totalVolume(totalVolume), headOrder(nullptr), tailOrder(nullptr) {}
 
-Limit::~Limit() {
-    if (orders) {
-        delete orders;
-    }
-}
-
-Order *Limit::getHeadOrder() {
-    return (size > 0) ? this->orders->getStart()->value : nullptr;
-}
+Limit::~Limit() {}
 
 int Limit::getLimitPrice() const {
     return this->limitPrice;
@@ -29,19 +23,18 @@ bool Limit::getBuyOrSell() const {
     return this->buyOrSell;
 }
 
-DoublyLinkedList<Order *> *Limit::getOrders() const {
-    return this->orders;
-}
-
 void Limit::addOrder(Order *order) {
-    auto *newNode = new DoublyLinkedListNode<Order *>(order);
-    this->orders->Insert(newNode);
-}
-
-void Limit::removeOrder(DoublyLinkedListNode<Order *> *node) {
-    size--;
-    totalVolume -= node->value->getShares();
-    orders->Delete(node);
+    if (!headOrder) {
+        headOrder = tailOrder = order;
+    } else {
+        tailOrder->nextOrder = order;
+        order->prevOrder = tailOrder;
+        order->nextOrder = nullptr;
+        tailOrder = order;
+    }
+    size += 1;
+    totalVolume += order->getShares();
+    order->parentLimit = this;
 }
 
 void Limit::partiallyFillVolume(int orderShares) {
@@ -52,19 +45,27 @@ void Limit::addShares(int shares) {
     this->totalVolume += shares;
 }
 
+Order *Limit::getHeadOrder() const {
+    return headOrder;
+}
+
+Order *Limit::getTailOrder() const {
+    return tailOrder;
+}
+
 void Limit::printForward() const {
-    auto curr = this->orders->getStart();
+    auto curr = headOrder;
     while (curr) {
-        std::cout << curr->value << std::endl;
-        curr = curr->next;
+        std::cout << curr->getId() << std::endl;
+        curr = curr->nextOrder;
     }
 }
 
 void Limit::printBackward() const {
-    auto curr = this->orders->getEnd();
+    auto curr = tailOrder;
     while (curr) {
-        std::cout << curr->value << std::endl;
-        curr = curr->prev;
+        std::cout << curr->getId() << std::endl;
+        curr = curr->prevOrder;
     }
 }
 

@@ -3,18 +3,15 @@
 
 #include "Limit.hpp"
 #include "RedBlackTree/RedBlackTree.hpp"
+#include <random>
 #include <unordered_map>
 
 class Book {
   private:
-    int executedOrdersCount;
-    RedBlackTree<Limit *> *buyTree;
-    RedBlackTree<Limit *> *sellTree;
+    RedBlackTree<Limit> *buyTree;
+    RedBlackTree<Limit> *sellTree;
 
-    RedBlackTreeNode<Limit *> *highestBuy;
-    RedBlackTreeNode<Limit *> *lowestSell;
-
-    std::unordered_map<int, DoublyLinkedListNode<Order *> *> orderMap;
+    std::unordered_map<int, Order *> orderMap;
 
     void insertLimit(const int limitPrice, const bool buyOrSell);
     void deleteLimit(const int limitPrice, const bool buyOrSell);
@@ -22,23 +19,26 @@ class Book {
     int processLimitOrderInMarket(int orderId, bool buyOrSell, int shares, int limitPrice);
 
   public:
-    RedBlackTree<Limit *> *getBuyTree() const;
-    RedBlackTree<Limit *> *getSellTree() const;
-    RedBlackTreeNode<Limit *> *getLowestSell() const;
-    RedBlackTreeNode<Limit *> *getHighestBuy() const;
+    Book();
+    ~Book();
+
+    int executedOrdersCount = 0;
+
+    RedBlackTreeNode<Limit> *getLowestSell() const;
+    RedBlackTreeNode<Limit> *getHighestBuy() const;
+
     void addMarketOrder(int orderId, bool buyOrSell, int shares);
     void addLimitOrder(int orderId, bool buyOrSell, int shares, int limitPrice);
+    void modifyLimitOrder(int orderId, int shares, int limitPrice);
     void cancelLimitOrder(int orderId);
 
-    DoublyLinkedListNode<Order *> *searchOrderMap(int orderId) const;
-    RedBlackTreeNode<Limit *> *searchLimitMaps(int limitPrice, bool buyOrSell) const;
+    Order *searchOrderMap(int orderId) const;
+    RedBlackTreeNode<Limit> *searchLimitMaps(int limitPrice, bool buyOrSell) const;
+    Order *getRandomOrder(std::mt19937 gen) const;
 
-    // for testing
     std::vector<int> inOrderTreeTraversal(bool buyOrSell);
     std::vector<int> preOrderTreeTraversal(bool buyOrSell);
     std::vector<int> postOrderTreeTraversal(bool buyOrSell);
-    Book();
-    ~Book();
 };
 
 #endif

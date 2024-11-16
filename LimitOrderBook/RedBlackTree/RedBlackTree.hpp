@@ -8,12 +8,9 @@ template <class T>
 class RedBlackTree {
   private:
     RedBlackTreeNode<T> *root;
-    RedBlackTreeNode<T> *minNode;
-    RedBlackTreeNode<T> *maxNode;
     int size;
     std::unordered_map<int, RedBlackTreeNode<T> *> nodeMap;
 
-    bool isEmpty() const;
     void rebalanceInsert(RedBlackTreeNode<T> *node);
     void rebalanceDelete(RedBlackTreeNode<T> *node);
     void leftRotate(RedBlackTreeNode<T> *node);
@@ -23,6 +20,10 @@ class RedBlackTree {
     RedBlackTreeNode<T> *maximum(RedBlackTreeNode<T> *node); // should just return min and maxNode field
 
   public:
+    RedBlackTreeNode<T> *minNode;
+    RedBlackTreeNode<T> *maxNode;
+    // for performance testing
+    int RBTreeRebalanceCount = 0;
     RedBlackTree();
     ~RedBlackTree();
     RedBlackTreeNode<T> *Search(const int key);
@@ -43,11 +44,6 @@ RedBlackTree<T>::~RedBlackTree() {
 }
 
 template <class T>
-bool RedBlackTree<T>::isEmpty() const {
-    return size == 0;
-}
-
-template <class T>
 RedBlackTreeNode<T> *RedBlackTree<T>::Search(const int key) {
     if (nodeMap.find(key) == nodeMap.end()) {
         return nullptr;
@@ -56,7 +52,7 @@ RedBlackTreeNode<T> *RedBlackTree<T>::Search(const int key) {
 }
 
 template <class T>
-RedBlackTreeNode<T> *RedBlackTree<T>::getRoot() {
+inline RedBlackTreeNode<T> *RedBlackTree<T>::getRoot() {
     return root;
 }
 
@@ -183,12 +179,12 @@ bool RedBlackTree<T>::Delete(const int key) {
 }
 
 template <class T>
-RedBlackTreeNode<T> *RedBlackTree<T>::GetSmallestNode() {
+inline RedBlackTreeNode<T> *RedBlackTree<T>::GetSmallestNode() {
     return minNode;
 }
 
 template <class T>
-RedBlackTreeNode<T> *RedBlackTree<T>::GetLargestNode() {
+inline RedBlackTreeNode<T> *RedBlackTree<T>::GetLargestNode() {
     return maxNode;
 }
 
@@ -255,7 +251,7 @@ void RedBlackTree<T>::transplant(RedBlackTreeNode<T> *u, RedBlackTreeNode<T> *v)
 }
 
 template <class T>
-RedBlackTreeNode<T> *RedBlackTree<T>::minimum(RedBlackTreeNode<T> *node) {
+inline RedBlackTreeNode<T> *RedBlackTree<T>::minimum(RedBlackTreeNode<T> *node) {
     while (node->left != nullptr) {
         node = node->left;
     }
@@ -263,7 +259,7 @@ RedBlackTreeNode<T> *RedBlackTree<T>::minimum(RedBlackTreeNode<T> *node) {
 }
 
 template <class T>
-RedBlackTreeNode<T> *RedBlackTree<T>::maximum(RedBlackTreeNode<T> *node) {
+inline RedBlackTreeNode<T> *RedBlackTree<T>::maximum(RedBlackTreeNode<T> *node) {
     while (node->right != nullptr) {
         node = node->right;
     }
@@ -309,6 +305,7 @@ void RedBlackTree<T>::rebalanceInsert(RedBlackTreeNode<T> *node) {
         }
     }
     root->colour = Colour::BLACK;
+    RBTreeRebalanceCount++;
 }
 
 template <class T>
@@ -317,57 +314,60 @@ void RedBlackTree<T>::rebalanceDelete(RedBlackTreeNode<T> *node) {
     while (node != root && node->colour == Colour::BLACK) {
         if (node == node->parent->left) {
             RedBlackTreeNode<T> *sibling = node->parent->right;
-            if (sibling->colour == Colour::RED) {
+
+            if (sibling && sibling->colour == Colour::RED) { // Check if sibling exists
                 sibling->colour = Colour::BLACK;
                 node->parent->colour = Colour::RED;
                 leftRotate(node->parent);
                 sibling = node->parent->right;
             }
-            if ((!sibling->left || sibling->left->colour == Colour::BLACK) &&
-                (!sibling->right || sibling->right->colour == Colour::BLACK)) {
-                sibling->colour = Colour::RED;
+            if ((!sibling || sibling->left == nullptr || sibling->left->colour == Colour::BLACK) &&
+                (!sibling || sibling->right == nullptr || sibling->right->colour == Colour::BLACK)) {
+                if (sibling) sibling->colour = Colour::RED; // Only modify sibling if it exists
                 node = node->parent;
             } else {
-                if (!sibling->right || sibling->right->colour == Colour::BLACK) {
-                    sibling->left->colour = Colour::BLACK;
-                    sibling->colour = Colour::RED;
-                    rightRotate(sibling);
+                if (!sibling || sibling->right == nullptr || sibling->right->colour == Colour::BLACK) {
+                    if (sibling && sibling->left) sibling->left->colour = Colour::BLACK;
+                    if (sibling) sibling->colour = Colour::RED;
+                    if (sibling) rightRotate(sibling);
                     sibling = node->parent->right;
                 }
-                sibling->colour = node->parent->colour;
+                if (sibling) sibling->colour = node->parent->colour;
                 node->parent->colour = Colour::BLACK;
-                if (sibling->right) sibling->right->colour = Colour::BLACK;
+                if (sibling && sibling->right) sibling->right->colour = Colour::BLACK;
                 leftRotate(node->parent);
                 node = root;
             }
         } else {
             RedBlackTreeNode<T> *sibling = node->parent->left;
-            if (sibling->colour == Colour::RED) {
+
+            if (sibling && sibling->colour == Colour::RED) { // Check if sibling exists
                 sibling->colour = Colour::BLACK;
                 node->parent->colour = Colour::RED;
                 rightRotate(node->parent);
                 sibling = node->parent->left;
             }
-            if ((!sibling->left || sibling->left->colour == Colour::BLACK) &&
-                (!sibling->right || sibling->right->colour == Colour::BLACK)) {
-                sibling->colour = Colour::RED;
+            if ((!sibling || sibling->left == nullptr || sibling->left->colour == Colour::BLACK) &&
+                (!sibling || sibling->right == nullptr || sibling->right->colour == Colour::BLACK)) {
+                if (sibling) sibling->colour = Colour::RED; // Only modify sibling if it exists
                 node = node->parent;
             } else {
-                if (!sibling->left || sibling->left->colour == Colour::BLACK) {
-                    sibling->right->colour = Colour::BLACK;
-                    sibling->colour = Colour::RED;
-                    leftRotate(sibling);
+                if (!sibling || sibling->left == nullptr || sibling->left->colour == Colour::BLACK) {
+                    if (sibling && sibling->right) sibling->right->colour = Colour::BLACK;
+                    if (sibling) sibling->colour = Colour::RED;
+                    if (sibling) leftRotate(sibling);
                     sibling = node->parent->left;
                 }
-                sibling->colour = node->parent->colour;
+                if (sibling) sibling->colour = node->parent->colour;
                 node->parent->colour = Colour::BLACK;
-                if (sibling->left) sibling->left->colour = Colour::BLACK;
+                if (sibling && sibling->left) sibling->left->colour = Colour::BLACK;
                 rightRotate(node->parent);
                 node = root;
             }
         }
     }
     node->colour = Colour::BLACK;
+    RBTreeRebalanceCount++;
 }
 
 #endif

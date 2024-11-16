@@ -31,11 +31,6 @@ RedBlackTreeNode<T>::RedBlackTreeNode(int key, T value, RedBlackTreeNode<T> *lef
 
 template <class T>
 RedBlackTreeNode<T>::~RedBlackTreeNode() {
-    if (left) delete left;
-    if (right) delete right;
-    if constexpr (std::is_pointer<T>::value) {
-        delete value;
-    }
 }
 
 #endif

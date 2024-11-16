@@ -25,3 +25,9 @@ makefile
 # Other temporary files
 *.log
 *.tmp
+
+# Don't include data files
+/generatedData/initialRandomOrders.txt
+/generatedData/initialPerformance.txt
+/generatedData/randomOrders.txt
+/generatedData/finalPerformanceMetrics.txt
