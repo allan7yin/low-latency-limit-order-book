@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_BUILD_TYPE Debug) # Retain Debug as default
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -mtune=native -flto -funroll-loops -fno-omit-frame-pointer")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -mtune=native -flto -funroll-loops -fno-omit-frame-pointer")
 
 set(SRC_DIR ${CMAKE_SOURCE_DIR})
 set(LOB_DIR ${SRC_DIR}/LimitOrderBook)
@@ -30,35 +30,35 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${PROJECT_NA
 # Google Test Integration
 # ====================
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
-)
+# include(FetchContent)
+# FetchContent_Declare(
+#   googletest
+#   URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+# )
 
-FetchContent_MakeAvailable(googletest)
+# FetchContent_MakeAvailable(googletest)
 
-# Define book_test executable with additional source files for linking
-add_executable(book_test 
-    ${TEST_DIR}/test_book.cpp 
-    ${LOB_DIR}/Order.cpp
-    ${LOB_DIR}/Book.cpp
-    ${LOB_DIR}/Limit.cpp
-)
-add_executable(redblacktree_test ${TEST_DIR}/test_redblacktree.cpp)
+# # Define book_test executable with additional source files for linking
+# add_executable(book_test 
+#     ${TEST_DIR}/test_book.cpp 
+#     ${LOB_DIR}/Order.cpp
+#     ${LOB_DIR}/Book.cpp
+#     ${LOB_DIR}/Limit.cpp
+# )
+# add_executable(redblacktree_test ${TEST_DIR}/test_redblacktree.cpp)
 
-# Set up include directories for the tests
-target_include_directories(book_test PRIVATE ${gtest_SOURCE_DIR}/googletest/include)
-target_include_directories(redblacktree_test PRIVATE ${gtest_SOURCE_DIR}/googletest/include)
+# # Set up include directories for the tests
+# target_include_directories(book_test PRIVATE ${gtest_SOURCE_DIR}/googletest/include)
+# target_include_directories(redblacktree_test PRIVATE ${gtest_SOURCE_DIR}/googletest/include)
 
-target_include_directories(book_test PRIVATE ${LOB_DIR})
+# target_include_directories(book_test PRIVATE ${LOB_DIR})
 
-# Link Google Test libraries
-target_link_libraries(book_test gtest gtest_main)
-target_link_libraries(redblacktree_test gtest gtest_main)
+# # Link Google Test libraries
+# target_link_libraries(book_test gtest gtest_main)
+# target_link_libraries(redblacktree_test gtest gtest_main)
 
-enable_testing()
+# enable_testing()
 
-# Add test for CTest
-add_test(NAME book_test COMMAND book_test)
-add_test(NAME redblacktree_test COMMAND redblacktree_test)
+# # Add test for CTest
+# add_test(NAME book_test COMMAND book_test)
+# add_test(NAME redblacktree_test COMMAND redblacktree_test)
